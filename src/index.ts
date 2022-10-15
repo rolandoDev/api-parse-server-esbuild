@@ -1,6 +1,8 @@
 // Example express application adding the parse-server module to expose Parse
 // compatible API routes.
 
+import { Request, Response } from "express";
+
 const express = require("express");
 const ParseServer = require("parse-server").ParseServer;
 const { version } = require("package.json");
@@ -16,7 +18,7 @@ const config = {
   masterKey: process.env.MASTER_KEY, //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL, // Don't forget to change to https if needed
   liveQuery: {
-    classNames: [], // List of classes to support for query subscriptions
+    classNames: [] as any, // List of classes to support for query subscriptions
   },
   allowClientClassCreation: false,
 };
@@ -47,7 +49,7 @@ if (process.env.NODE_ENV === "development") {
   app.use("/dashboard", dashboard);
 }
 // Parse Server plays nicely with the rest of your web routes
-app.get("/", (_, res) => {
+app.get("/", (_: Request, res: Response) => {
   res.status(200).send(`API version: ${version}`);
 });
 
